@@ -3,6 +3,11 @@ class DownloadRF:
     """
 
     def __init__(self, filepath_tmp):
+        """Init class
+
+        Args:
+            filepath_tmp (str): Complete filepath where the zip files will be stored
+        """
 
         # Init
         self.url = "http://200.152.38.155/CNPJ"
@@ -13,6 +18,8 @@ class DownloadRF:
         self.url_full = "{}/{}".format(self.url, self.url_query_sort)
 
     def get_zip_links(self):
+        """Get all the zip links from receita federal website
+        """
 
         from requests import get
         from bs4 import BeautifulSoup
@@ -42,6 +49,8 @@ class DownloadRF:
         self.links = links
 
     def _create_tmp_directory(self):
+        """Create the temporary directory in case do not exist
+        """
 
         from os import path, mkdir
 
@@ -50,6 +59,12 @@ class DownloadRF:
             mkdir(self.filepath_tmp)
 
     def _download_zip(self, filepath, link):
+        """Download a zip file from link and store in the filepath
+
+        Args:
+            filepath (str): Name of filepath to store the zip file and check in what part the download stop
+            link (str): URL of zip file to download
+        """
 
         from os import path
         from os import stat
@@ -89,6 +104,8 @@ class DownloadRF:
                     print("Downloading {} - {:.1f}%".format(link, perc_download))
 
     def download_zip(self):
+        """Download all zip files from Receita Federal
+        """
 
         from os import path, listdir, remove
 
@@ -134,12 +151,20 @@ class ManageFiles:
         self.filepath_dst = filepath_dst
 
     def _unzip(self, zip_filename, zip_folder):
+        """Unzip a file and put inside the zip_folder
+
+        Args:
+            zip_filename (str): Full filepath of zip to extract data
+            zip_folder (str): Full filepath of folder to store the extraction
+        """
 
         from zipfile import ZipFile
         with ZipFile(zip_filename) as file_unzip:
             file_unzip.extractall(zip_folder)
 
     def unzip(self):
+        """Unzip all zip files that are downloaded from Receita Federal
+        """
 
         from os import listdir
 
@@ -155,6 +180,8 @@ class ManageFiles:
                 print("Cannot unzip {}".format(zip_file))
 
     def delete_source_directory(self):
+        """Delete the source directory
+        """
 
         from shutil import rmtree
         from os import path
@@ -165,6 +192,14 @@ class ManageFiles:
             rmtree(self.filepath_src)
 
     def treat_file(self, filepath):
+        """Treatment of filename. This function can be change for one that its more suitable for you
+
+        Args:
+            filepath (str): Filepath of zip file extracted
+
+        Returns:
+            str: New filename of path
+        """
 
         # Treat file to another name
         index = filepath.split(".")[1][-1]
@@ -172,6 +207,8 @@ class ManageFiles:
         return filename + index + ".csv"
 
     def move_files(self):
+        """Move all files from the zip temporary folder to raw folder
+        """
 
         from shutil import move
         from os import listdir
