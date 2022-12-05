@@ -1,5 +1,10 @@
+"""
+    The '# %%' are magic commands on VS Code to create cells. You can ignore this.
+"""
+
 # %%
 from src.receita_federal import DownloadRF, ManageFiles
+
 # %%
 # Instantiate class
 # Its necessary to pass a temporary path where you will save your zip files
@@ -9,6 +14,7 @@ rf = DownloadRF(
 
 # Download all zip files
 rf.download_zip()
+
 # %%
 # Instantiate class
 # Its necessary to pass a temporary path where you zip files are stored
