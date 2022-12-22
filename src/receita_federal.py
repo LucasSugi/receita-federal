@@ -48,15 +48,15 @@ class DownloadRF:
 
         self.links = links
 
-    def _create_tmp_directory(self):
-        """Create the temporary directory in case do not exist
+    def _create_directory(self, filepath_directory):
+        """Create the directory in case do not exist
         """
 
         from os import path, mkdir
 
         # Create temporary directory if not exist
-        if(not path.exists(self.filepath_tmp)):
-            mkdir(self.filepath_tmp)
+        if(not path.exists(filepath_directory)):
+            mkdir(filepath_directory)
 
     def _download_zip(self, filepath, link):
         """Download a zip file from link and store in the filepath
@@ -113,7 +113,7 @@ class DownloadRF:
         self.get_zip_links()
 
         # Ensure the tmp directory exist
-        self._create_tmp_directory()
+        self._create_directory(self.filepath_tmp)
 
         # Download each key
         for key in self.links.keys():
@@ -215,6 +215,9 @@ class ManageFiles:
 
         # Get all files that should be move
         files_to_move = list(filter(lambda x: not x.endswith(".zip"), listdir(self.filepath_src)))
+
+        # Ensure the raw directory exist
+        self._create_directory(self.filepath_raw)
 
         # Move files
         for file in files_to_move:
