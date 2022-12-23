@@ -150,6 +150,16 @@ class ManageFiles:
         self.filepath_src = filepath_src
         self.filepath_dst = filepath_dst
 
+    def _create_directory(self, filepath_directory):
+        """Create the directory in case do not exist
+        """
+
+        from os import path, mkdir
+
+        # Create temporary directory if not exist
+        if(not path.exists(filepath_directory)):
+            mkdir(filepath_directory)
+
     def _unzip(self, zip_filename, zip_folder):
         """Unzip a file and put inside the zip_folder
 
@@ -216,8 +226,8 @@ class ManageFiles:
         # Get all files that should be move
         files_to_move = list(filter(lambda x: not x.endswith(".zip"), listdir(self.filepath_src)))
 
-        # Ensure the raw directory exist
-        self._create_directory(self.filepath_raw)
+        # Ensure the dst directory exist
+        self._create_directory(self.filepath_dst)
 
         # Move files
         for file in files_to_move:
